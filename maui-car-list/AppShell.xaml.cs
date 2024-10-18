@@ -1,10 +1,9 @@
-﻿namespace maui_car_list
+﻿namespace maui_car_list;
+
+public partial class AppShell : Shell
 {
-    public partial class AppShell : Shell
+    public AppShell()
     {
-        public AppShell()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }
