@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="maui_car_list.LayoutExample"
+             Title="LayoutExample">
+    <VerticalStackLayout Padding="10,50,10,10">
+        
+        <Label 
+            Text="Welcome to .NET MAUI!"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        
+        <!--Auto and Star sizing: Use Auto for content size and * for flexible space.
+        MaxWidthRequest: Constrain button sizes.-->
+        <Grid ColumnDefinitions="*, *, *" RowDefinitions="*,*">
+            <Button Grid.Column="0" Grid.Row="0" Text="Button 1" HorizontalOptions="FillAndExpand" Margin="10"/>
+            <Button Grid.Column="1" Grid.Row="0" Text="Button 2" HorizontalOptions="CenterAndExpand" Margin="10"/>
+            <Button Grid.Column="2" Grid.Row="0" Text="Button 3" HorizontalOptions="FillAndExpand" Margin="10"/>
+            <Button Grid.Column="0" Grid.Row="1" Text="Button 4" HorizontalOptions="FillAndExpand" Margin="10"/>
+            <Button Grid.Column="1" Grid.Row="1" Text="Button 5" HorizontalOptions="FillAndExpand" Margin="10"/>
+            <Button Grid.Column="2" Grid.Row="1" Text="Button 6" HorizontalOptions="FillAndExpand" Margin="10"/>
+        </Grid>
+
+    </VerticalStackLayout>
+</ContentPage>
