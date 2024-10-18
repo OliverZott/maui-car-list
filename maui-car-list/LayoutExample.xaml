@@ -3,7 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="maui_car_list.LayoutExample"
              Title="LayoutExample">
-    <VerticalStackLayout Padding="10,50,10,10">
+
+    <!--Platform specific by code-behind and by defining directlyn-->
+    <VerticalStackLayout 
+        x:Name="VStackLayout" 
+        Padding="{OnPlatform iOS='10,200,40,90', Android='25'}"
+        BackgroundColor="{OnPlatform iOS=Red, Default=Green}"
+        >
         
         <Label 
             Text="Welcome to .NET MAUI!"
