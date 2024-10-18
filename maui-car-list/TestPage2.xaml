@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:resources="clr-namespace:maui_car_list.Resources"
              x:Class="maui_car_list.TestPage2"
              Title="TestPage2">
     <VerticalStackLayout>
         <Label
                 Text="TestPage Xaml Version :)"
                 Style="{StaticResource Headline}"
+                TextColor="{x:Static Member=resources:SharedResources.FontColor}"
                 SemanticProperties.HeadingLevel="Level1" />
         <Label 
             Text="Count = 0"
