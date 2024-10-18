@@ -1,8 +1,11 @@
-﻿namespace maui_car_list;
+﻿
+namespace maui_car_list;
 
 public partial class MainPage : ContentPage
 {
     int count = 0;
+
+    public const double FontSize = 10;
 
     public MainPage()
     {
@@ -19,5 +22,13 @@ public partial class MainPage : ContentPage
             CounterBtn.Text = $"Clicked {count} times";
 
         SemanticScreenReader.Announce(CounterBtn.Text);
+    }
+}
+
+public class GlobalFontSizeExtension : IMarkupExtension
+{
+    public object ProvideValue(IServiceProvider serviceProvider)
+    {
+        return MainPage.FontSize;
     }
 }
