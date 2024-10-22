@@ -4,6 +4,7 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:maui_car_list"
+    xmlns:testviews="clr-namespace:maui_car_list.Views.TestPages"
     Shell.FlyoutBehavior="Flyout"
     Title="maui_car_list">
 
@@ -18,20 +19,20 @@
         <Tab Title="TestPage" Icon="dotnet_bot.png">
             <ShellContent
                 Title="Home"
-                ContentTemplate="{DataTemplate local:TestPage}"
+                ContentTemplate="{DataTemplate testviews:TestPage}"
                 Route="TestPage"/>
         </Tab>
         <Tab Title="TestPage2" Icon="dotnet_bot.png">
             <ShellContent
                 Title="Home"
-                ContentTemplate="{DataTemplate local:TestPage2}"
+                ContentTemplate="{DataTemplate testviews:TestPage2}"
                 Route="TestPage2" 
                 Icon="dotnet_bot.png"/>
         </Tab>
         <Tab Title="LayoutExample" Icon="dotnet_bot.png">
             <ShellContent
                 Title="Home"
-                ContentTemplate="{DataTemplate local:LayoutExample}"
+                ContentTemplate="{DataTemplate testviews:LayoutExample}"
                 Route="LayoutExample" 
                 Icon="dotnet_bot.png"/>
         </Tab>
@@ -44,15 +45,15 @@
         Icon="dotnet_bot.png"/>
     <ShellContent
         Title="Test Page"
-        ContentTemplate="{DataTemplate local:TestPage}"
+        ContentTemplate="{DataTemplate testviews:TestPage}"
         Route="TestPage" />
     <ShellContent
         Title="Test Page 2"
-        ContentTemplate="{DataTemplate local:TestPage2}"
+        ContentTemplate="{DataTemplate testviews:TestPage2}"
         Route="TestPage2" />
     <ShellContent
         Title="LayoutExample"
-        ContentTemplate="{DataTemplate local:LayoutExample}"
+        ContentTemplate="{DataTemplate testviews:LayoutExample}"
         Route="LayoutExample" />
 
 </Shell>

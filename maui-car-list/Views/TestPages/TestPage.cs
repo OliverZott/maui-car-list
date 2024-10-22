@@ -1,5 +1,4 @@
-
-namespace maui_car_list;
+namespace maui_car_list.Views.TestPages;
 
 public class TestPage : ContentPage
 {

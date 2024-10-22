@@ -64,14 +64,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Views\" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <MauiXaml Update="LayoutExample.xaml">
+	  <MauiXaml Update="Views\TestPages\LayoutExample.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="TestPage2.xaml">
+	  <MauiXaml Update="Views\TestPages\TestPage2.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

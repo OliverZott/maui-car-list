@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="maui_car_list.LayoutExample"
+             x:Class="maui_car_list.Views.TestPages.LayoutExample"
              Title="LayoutExample">
 
     <!--Platform specific by code-behind and by defining directlyn-->
