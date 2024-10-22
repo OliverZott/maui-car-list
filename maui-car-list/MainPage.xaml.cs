@@ -8,7 +8,7 @@ public partial class MainPage : ContentPage
     int count = 0;
 
     public const double FontSize = 10;
-    private readonly CarListViewModel carListViewModel;
+    private readonly CarListViewModel? carListViewModel;
 
     public MainPage(CarListViewModel carListViewModel)
     {

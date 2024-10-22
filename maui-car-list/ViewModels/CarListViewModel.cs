@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using maui_car_list.Models;
 using maui_car_list.Services;
 using System.Collections.ObjectModel;
@@ -16,6 +17,9 @@ public partial class CarListViewModel : BaseViewModel
         Title = "Car List";
         this.carService = carService;
     }
+
+    [ObservableProperty]
+    public bool isRefreshing;
 
     [RelayCommand]
     async Task GetCarListAsync()
@@ -42,7 +46,7 @@ public partial class CarListViewModel : BaseViewModel
         finally
         {
             IsBusy = false;
+            IsRefreshing = false;
         }
-
     }
 }
