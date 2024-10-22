@@ -1,5 +1,6 @@
 ﻿using maui_car_list.Services;
 using maui_car_list.ViewModels;
+using maui_car_list.Views;
 using Microsoft.Extensions.Logging;
 
 namespace maui_car_list;
@@ -18,8 +19,12 @@ public static class MauiProgram
             });
 
         builder.Services.AddSingleton<CarService>();
+
         builder.Services.AddSingleton<CarListViewModel>();
+        builder.Services.AddTransient<CarDetailsViewModel>();  // transient because we want new instance of page every time!
+
         builder.Services.AddSingleton<MainPage>();
+        builder.Services.AddTransient<CarDetailsPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();
