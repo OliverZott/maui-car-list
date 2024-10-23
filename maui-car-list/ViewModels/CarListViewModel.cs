@@ -1,22 +1,18 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using maui_car_list.Models;
-using maui_car_list.Services;
 using maui_car_list.Views;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Text.Json;
 
 namespace maui_car_list.ViewModels;
 public partial class CarListViewModel : BaseViewModel
 {
-    private readonly CarService carService;
     public ObservableCollection<Car> Cars { get; private set; } = []; // private set because only set here!! Also default initialized (shorthad of new ()
 
-    public CarListViewModel(CarService carService)
+    public CarListViewModel()
     {
         Title = "Car List";
-        this.carService = carService;
     }
 
     [ObservableProperty]
@@ -33,28 +29,16 @@ public partial class CarListViewModel : BaseViewModel
             IsBusy = true;
             if (Cars.Any()) Cars.Clear();
 
-            var cars = carService.GetCars();
+            var cars = App.CarService.GetCars();
             // foreach cause no AddRange for observablecollecrion
             foreach (var car in cars)
             {
                 Cars.Add(car);
             }
-
-            // 2. Store cars in Filesystem
-            var fileName = "carList.json";
-            var serializedCarList = JsonSerializer.Serialize(cars);
-            File.WriteAllText(fileName, serializedCarList);
-            var rawText = File.ReadAllText(fileName);
-            var carsFromText = JsonSerializer.Deserialize<List<Car>>(rawText);
-            var path = FileSystem.AppDataDirectory;
-            var folder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-
-            // 3. SQLite database
-
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Unable to get cars: {ex.Message}");  // whats the sink??
+            Debug.WriteLine($"Unable to get cars: {ex.Message}");  // sink is Output Window, when in Debug Mode
             await Shell.Current.DisplayAlert($"Error", "Failed to retrieve list of cars", "Ok");  // could abstract that away and user via DI
         }
         finally

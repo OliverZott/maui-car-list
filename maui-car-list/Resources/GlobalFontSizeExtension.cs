@@ -4,6 +4,7 @@ public class GlobalFontSizeExtension : IMarkupExtension
 {
     public object ProvideValue(IServiceProvider serviceProvider)
     {
-        return MainPage.FontSize;
+        throw new NotImplementedException();
+        //return MainPage.FontSize; // should be defined in MainPage 
     }
 }

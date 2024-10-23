@@ -1,21 +1,43 @@
 ﻿using maui_car_list.Models;
+using SQLite;
 
 namespace maui_car_list.Services;
 public class CarService
 {
+    private SQLiteConnection connection;
+    private string dbPath;
+    public string StatusMessage;
+
+
+    public CarService(string dbPath)
+    {
+        this.dbPath = dbPath;
+    }
+
+
+    private void Init()
+    {
+        if (connection != null) return;
+        connection = new SQLiteConnection(dbPath);
+        connection.CreateTable<Car>();
+    }
+
     public List<Car> GetCars()
     {
-        var cars = new List<Car>
+        try
         {
-            new() {Id = 1, Make = "Volvo", Model = "XC90", Vin = "123"},
-            new() {Id = 2, Make = "Audi", Model = "A8", Vin = "123"},
-            new() {Id = 3, Make = "Nissan", Model = "Impreza", Vin = "123"},
-            new() {Id = 4, Make = "BMW", Model = "M3", Vin = "123"},
-            new() {Id = 5, Make = "Nissan", Model = "Note", Vin = "123"},
-            new() {Id = 5, Make = "Toyota", Model = "Prado", Vin = "123"},
-            new() {Id = 5, Make = "Honda", Model = "Fit", Vin = "123"},
-        };
+            Init();
+            return connection.Table<Car>().ToList();
 
-        return cars;
+        }
+        catch (Exception)
+        {
+            StatusMessage = "Failed to retrieve data.";
+            throw;
+        }
+        finally
+        {
+        }
+
     }
 }

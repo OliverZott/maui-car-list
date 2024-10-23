@@ -9,12 +9,6 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
         BindingContext = carListViewModel;
-
-        // Storage examples
-        // 1: Key-Value pair as preferences in phone:
-        // Example for keys: Login ..check if person is logged in
-        Preferences.Set("saveDetails", true);
-        var detaislSaved = Preferences.Get("saveDetails", false);
     }
 
 }
