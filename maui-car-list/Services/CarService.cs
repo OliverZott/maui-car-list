@@ -19,7 +19,7 @@ public class CarService
     {
         if (connection != null) return;
         connection = new SQLiteConnection(dbPath);
-        connection.CreateTable<Car>();
+        connection.CreateTable<Car>();  // wouldn't this always create new table when app starts?
     }
 
     public List<Car> GetCars()
@@ -38,6 +38,68 @@ public class CarService
         finally
         {
         }
-
     }
+
+    internal Car GetCar(int id)
+    {
+        try
+        {
+            Init();
+            return connection.Table<Car>().FirstOrDefault(q => q.Id == id);
+        }
+        catch (Exception)
+        {
+            StatusMessage = "Failed to retrieve data.";
+        }
+        return null;
+    }
+
+    public void AddCar(Car car)
+    {
+        // TODO: add validation for uniqueness of Vin!!! where is best place?
+        try
+        {
+            Init();
+            if (car == null) throw new Exception("Invalid Car Record");
+
+            var result = connection.Insert(car);
+            StatusMessage = result == 0 ? "Insert Failed" : "Insert Successfull";
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = "Failed to insert data.";
+        }
+    }
+
+    public int DeleteCar(int id)
+    {
+        int result = 0;
+        try
+        {
+            Init();
+            result = connection.Table<Car>().Delete(q => q.Id == id);
+            StatusMessage = result == 0 ? "Delete Failed" : "Successfully Deleted";
+        }
+        catch (Exception)
+        {
+            StatusMessage = "Failed to delete data.";
+        }
+        return result;
+    }
+
+    public void UpdateCar(Car car)
+    {
+        try
+        {
+            Init();
+            var result = connection.Update(car);
+            StatusMessage = result == 0 ? "Delete Failed" : "Successfully Deleted";
+        }
+        catch (Exception)
+        {
+
+            StatusMessage = "Failed to update data.";
+        }
+    }
+
 }

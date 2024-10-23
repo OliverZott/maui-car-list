@@ -13,10 +13,17 @@ public partial class CarListViewModel : BaseViewModel
     public CarListViewModel()
     {
         Title = "Car List";
+        GetCarListAsync().Wait();  // maybe better with OnApperance in ContentnPage MainPage (see training example)
     }
 
     [ObservableProperty]
     public bool isRefreshing;
+    [ObservableProperty]
+    string make;
+    [ObservableProperty]
+    string model;
+    [ObservableProperty]
+    string vin;
 
 
     [RelayCommand]
@@ -50,17 +57,71 @@ public partial class CarListViewModel : BaseViewModel
 
 
     [RelayCommand]
-    async Task GetCarDetails(Car car)
+    async Task GetCarDetails(int id)
     {
-        if (car == null)
+        if (id == 0)
         {
-            await Shell.Current.DisplayAlert($"", "Not details for the car", "Ok");
+            await Shell.Current.DisplayAlert($"Info", "Not details for this car", "Ok");
             return;
         }
 
-        await Shell.Current.GoToAsync(nameof(CarDetailsPage), true, new Dictionary<string, object>
-        {
-            {nameof(Car), car }
-        });
+        await Shell.Current.GoToAsync($"{nameof(CarDetailsPage)}?Id={id}", true);
     }
+
+
+    [RelayCommand]
+    async Task AddCar()
+    {
+        if (string.IsNullOrEmpty(Make) || string.IsNullOrEmpty(Model) || string.IsNullOrEmpty(Vin))
+        {
+            await Shell.Current.DisplayAlert("Invalid Data", "Please insert valid data to all fields", "Ok");
+            return;
+        }
+
+        var car = new Car
+        {
+            Make = Make,
+            Model = Model,
+            Vin = Vin
+        };
+
+        App.CarService.AddCar(car);
+        await Shell.Current.DisplayAlert("Info", App.CarService.StatusMessage, "Ok");
+
+        // Clear Form
+        Make = Model = Vin = string.Empty;
+
+        // TODO: instead maybe add car to Cars list ....in scope this will trigger refresh also without making new db request
+        await GetCarListAsync();
+    }
+
+
+    [RelayCommand]
+    async Task DeleteCar(int id)
+    {
+        if (id == 0)
+        {
+            await Shell.Current.DisplayAlert("Invalid Data", "Id not found", "Ok");
+            return;
+        }
+        var result = App.CarService.DeleteCar(id);
+        if (result == 0) await Shell.Current.DisplayAlert("Error", App.CarService.StatusMessage, "Ok");
+        else
+        {
+            await Shell.Current.DisplayAlert("Info", App.CarService.StatusMessage, "Ok");
+
+            // TODO: instead maybe add car to Cars list ....in scope this will trigger refresh also without making new db request
+            await GetCarListAsync();
+        }
+
+
+    }
+
+
+    [RelayCommand]
+    async Task UpdateCar(int id)
+    {
+        return;
+    }
+
 }
