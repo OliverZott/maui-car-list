@@ -5,6 +5,7 @@ using maui_car_list.Services;
 using maui_car_list.Views;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Text.Json;
 
 namespace maui_car_list.ViewModels;
 public partial class CarListViewModel : BaseViewModel
@@ -38,6 +39,18 @@ public partial class CarListViewModel : BaseViewModel
             {
                 Cars.Add(car);
             }
+
+            // 2. Store cars in Filesystem
+            var fileName = "carList.json";
+            var serializedCarList = JsonSerializer.Serialize(cars);
+            File.WriteAllText(fileName, serializedCarList);
+            var rawText = File.ReadAllText(fileName);
+            var carsFromText = JsonSerializer.Deserialize<List<Car>>(rawText);
+            var path = FileSystem.AppDataDirectory;
+            var folder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            // 3. SQLite database
+
         }
         catch (Exception ex)
         {
