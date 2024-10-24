@@ -121,17 +121,27 @@ public partial class CarListViewModel : BaseViewModel
             await Shell.Current.DisplayAlert("Invalid Data", "Id not found", "Ok");
             return;
         }
-        var result = App.CarService.DeleteCar(id);
-        if (result == 0) await Shell.Current.DisplayAlert("Error", App.CarService.StatusMessage, "Ok");
-        else
+
+
+        // in DEBUG mode Shell.Current.DisplayAlert at this point crashes the app!??
+        bool confirm = await Shell.Current.DisplayAlert(
+            "Confirm Delete",
+            "Are you sure you want to delete this entry?",
+            "Yes",
+            "No");
+
+        if (confirm)
         {
-            await Shell.Current.DisplayAlert("Info", App.CarService.StatusMessage, "Ok");
+            var result = App.CarService.DeleteCar(id);
+            if (result == 0) await Application.Current.MainPage.DisplayAlert("Error", App.CarService.StatusMessage, "Ok");
+            else
+            {
+                await Shell.Current.DisplayAlert("Info", App.CarService.StatusMessage, "Ok");
 
-            // TODO: instead maybe add car to Cars list ....in scope this will trigger refresh also without making new db request
-            await GetCarListAsync();
+                // TODO: instead maybe add car to Cars list ....in scope this will trigger refresh also without making new db request
+                await GetCarListAsync();
+            }
         }
-
-
     }
 
 
