@@ -9,8 +9,8 @@
     
     <StackLayout>
         <HorizontalStackLayout>
-            <Label Text="VIN:"></Label>
-            <Label Text="{Binding Car.Vin}"></Label>
+            <Label Text="VIN:  " FontSize="20"></Label>
+            <Label Text="{Binding Car.Vin}" FontSize="20"></Label>
         </HorizontalStackLayout>
     </StackLayout>
 

@@ -8,13 +8,19 @@ using System.Diagnostics;
 namespace maui_car_list.ViewModels;
 public partial class CarListViewModel : BaseViewModel
 {
+    private const string editButtonText = "Edit Car";
+    private const string addButtontext = "Add Car";
+
     public ObservableCollection<Car> Cars { get; private set; } = []; // private set because only set here!! Also default initialized (shorthad of new ()
 
     public CarListViewModel()
     {
         Title = "Car List";
+        AddEditButtonText = addButtontext;
+        AddEditButtonColor = null;
         GetCarListAsync().Wait();  // maybe better with OnApperance in ContentnPage MainPage (see training example)
     }
+
 
     [ObservableProperty]
     public bool isRefreshing;
@@ -24,6 +30,12 @@ public partial class CarListViewModel : BaseViewModel
     string model;
     [ObservableProperty]
     string vin;
+    [ObservableProperty]
+    string addEditButtonText;
+    [ObservableProperty]
+    int carId;
+    [ObservableProperty]
+    Color addEditButtonColor;
 
 
     [RelayCommand]
@@ -70,7 +82,7 @@ public partial class CarListViewModel : BaseViewModel
 
 
     [RelayCommand]
-    async Task AddCar()
+    async Task SaveCar()
     {
         if (string.IsNullOrEmpty(Make) || string.IsNullOrEmpty(Model) || string.IsNullOrEmpty(Vin))
         {
@@ -84,15 +96,20 @@ public partial class CarListViewModel : BaseViewModel
             Model = Model,
             Vin = Vin
         };
+        if (CarId != 0)
+        {
+            car.Id = CarId;
+            App.CarService.UpdateCar(car);
+            await Shell.Current.DisplayAlert("Info", App.CarService.StatusMessage, "Ok");
+        }
+        else
+        {
+            App.CarService.AddCar(car);
+            await Shell.Current.DisplayAlert("Info", App.CarService.StatusMessage, "Ok");
+        }
 
-        App.CarService.AddCar(car);
-        await Shell.Current.DisplayAlert("Info", App.CarService.StatusMessage, "Ok");
-
-        // Clear Form
-        Make = Model = Vin = string.Empty;
-
-        // TODO: instead maybe add car to Cars list ....in scope this will trigger refresh also without making new db request
         await GetCarListAsync();
+        await ClearForm();
     }
 
 
@@ -119,9 +136,25 @@ public partial class CarListViewModel : BaseViewModel
 
 
     [RelayCommand]
-    async Task UpdateCar(int id)
+    async Task SetEditMode(int id)
     {
-        return;
+        AddEditButtonText = editButtonText;
+        AddEditButtonColor = Color.FromArgb("#ffcc66");
+        CarId = id;  // set input id to binding context of the form
+        var car = App.CarService.GetCar(id);
+        Make = car.Make;
+        Model = car.Model;
+        Vin = car.Vin;
     }
 
+
+    [RelayCommand]
+    public Task ClearForm()
+    {
+        AddEditButtonText = addButtontext;
+        AddEditButtonColor = null;
+        CarId = 0;
+        Make = Model = Vin = string.Empty;
+        return Task.CompletedTask;
+    }
 }

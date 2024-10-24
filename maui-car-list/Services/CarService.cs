@@ -89,11 +89,13 @@ public class CarService
 
     public void UpdateCar(Car car)
     {
+        if (car == null) throw new Exception("Invalid Car Record");
+
         try
         {
             Init();
             var result = connection.Update(car);
-            StatusMessage = result == 0 ? "Delete Failed" : "Successfully Deleted";
+            StatusMessage = result == 0 ? "Update Failed" : "Successfully Updated";
         }
         catch (Exception)
         {
