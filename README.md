@@ -5,6 +5,17 @@ ICommand -> RelayCommand
 
 Just a little maui testing and learning project :)
 
+## Remarks
+
+### Emulator Errors
+
+1. restart Emulator
+1. Delete / Create New Emulator
+1. `ADB-Error` ...First RELEASE build then DEBUG build
+1. Restart machine
+1. clean sln / remove obj/bin folder / build solution
+1. DO ALL of the above
+
 ## MVVM
 
 ### View Model
