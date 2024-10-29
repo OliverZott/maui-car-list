@@ -1,9 +1,10 @@
 # Readme
 
+Just a little maui testing and learning project :)
+
 AlsoNotifyChanged -> NotifyPropertyChanged
 ICommand -> RelayCommand
 
-Just a little maui testing and learning project :)
 
 ## Remarks
 
@@ -32,3 +33,13 @@ Just a little maui testing and learning project :)
 - **Bind** UI Elements to properties and commands
 
 Use .NET Community MVVM Toolkit as Framework for DI, components, UI platform integration (others: ReactiveUI, PrismLibrary)
+
+## UI / UX
+
+- Update inside the Detail View
+- Delete Button less present?
+- ClearForm less present compared to Add
+
+## ToDo
+
+- Sort by date

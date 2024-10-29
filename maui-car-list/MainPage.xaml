@@ -52,7 +52,7 @@
                             <HorizontalStackLayout Grid.Column="1">
                                 <Button Text="Update" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CarListViewModel}}, Path=SetEditModeCommand}" 
                                                   CommandParameter="{Binding Id}" Margin="9"/>
-                                <Button BackgroundColor="Red" Text="Delete" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CarListViewModel}}, Path=DeleteCarCommand}" 
+                                <Button BackgroundColor="Red" Text="del" Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CarListViewModel}}, Path=DeleteCarCommand}" 
                                                   CommandParameter="{Binding Id}" Margin="9"/>
                             </HorizontalStackLayout>
                         </Grid>

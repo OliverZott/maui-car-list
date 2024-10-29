@@ -8,4 +8,34 @@ internal class CarListDbContext : DbContext
     }
 
     public DbSet<Car> Cars { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Car>().HasData(
+            new Car
+            {
+                Id = 1,
+                Make = "BMW",
+                Model = "5",
+                Vin = "bmwvin1"
+            },
+            new Car
+            {
+                Id = 2,
+                Make = "Subaru",
+                Model = "Impreza",
+                Vin = "subaruvin1"
+            },
+            new Car
+            {
+                Id = 3,
+                Make = "Honda",
+                Model = "Civic",
+                Vin = "hondavin1"
+            }
+        );
+    }
+
 }
