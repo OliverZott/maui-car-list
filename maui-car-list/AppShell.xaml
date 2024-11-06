@@ -13,47 +13,40 @@
             <ShellContent
                 Title="Home"
                 ContentTemplate="{DataTemplate local:MainPage}"
-                Route="MainPage" 
                 Icon="dotnet_bot.png"/>
         </Tab>
         <Tab Title="TestPage" Icon="dotnet_bot.png">
             <ShellContent
                 Title="Home"
-                ContentTemplate="{DataTemplate testviews:TestPage}"
-                Route="TestPage"/>
+                ContentTemplate="{DataTemplate testviews:TestPage}"/>
         </Tab>
         <Tab Title="TestPage2" Icon="dotnet_bot.png">
             <ShellContent
                 Title="Home"
                 ContentTemplate="{DataTemplate testviews:TestPage2}"
-                Route="TestPage2" 
                 Icon="dotnet_bot.png"/>
         </Tab>
         <Tab Title="LayoutExample" Icon="dotnet_bot.png">
             <ShellContent
                 Title="Home"
                 ContentTemplate="{DataTemplate testviews:LayoutExample}"
-                Route="LayoutExample" 
                 Icon="dotnet_bot.png"/>
         </Tab>
     </TabBar>
 
+
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" 
         Icon="dotnet_bot.png"/>
     <ShellContent
         Title="Test Page"
-        ContentTemplate="{DataTemplate testviews:TestPage}"
-        Route="TestPage" />
+        ContentTemplate="{DataTemplate testviews:TestPage}"/>
     <ShellContent
         Title="Test Page 2"
-        ContentTemplate="{DataTemplate testviews:TestPage2}"
-        Route="TestPage2" />
+        ContentTemplate="{DataTemplate testviews:TestPage2}"/>
     <ShellContent
         Title="LayoutExample"
-        ContentTemplate="{DataTemplate testviews:LayoutExample}"
-        Route="LayoutExample" />
+        ContentTemplate="{DataTemplate testviews:LayoutExample}" />
 
 </Shell>
