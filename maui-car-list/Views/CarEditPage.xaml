@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="maui_car_list.Views.CarEditPage"
+             
+             xmlns:viewmodel="clr-namespace:maui_car_list.ViewModels"
+             x:DataType="viewmodel:CarDetailsViewModel">
+
+    <ContentPage.Title>
+        <MultiBinding StringFormat="Edit: {0}">
+            <Binding Path="Car.FullCarName" />
+        </MultiBinding>
+    </ContentPage.Title>
+
+    <StackLayout>
+
+        <VerticalStackLayout Padding="5" Grid.Row="0" Margin="9">
+            <Entry x:Name="Make" Placeholder="Enter Make" Text="{Binding Make}"/>
+            <Entry x:Name="Model" Placeholder="Enter Model" Text="{Binding Model}"/>
+            <Entry x:Name="Vin" Placeholder="Enter Vin" Text="{Binding Vin}"/>
+        </VerticalStackLayout>
+        
+        <HorizontalStackLayout Grid.Column="1">
+            <Button Text="Edt" Command="{Binding EditCarCommand}" CommandParameter="{Binding Car.Id}" Margin="9"/>
+            <Button Command="{Binding DeleteCarCommand}" CommandParameter="{Binding Car.Id}" Margin="9"/>
+        </HorizontalStackLayout>
+
+    </StackLayout>
+
+</ContentPage>

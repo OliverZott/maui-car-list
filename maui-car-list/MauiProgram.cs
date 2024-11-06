@@ -25,6 +25,7 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<CarListViewModel>();
         builder.Services.AddTransient<CarDetailsViewModel>();  // transient because we want new instance of page every time!
+        builder.Services.AddTransient<CarEditViewModel>();  // transient because we want new instance of page every time!
 
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddTransient<CarDetailsPage>();

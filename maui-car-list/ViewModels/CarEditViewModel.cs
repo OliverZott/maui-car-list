@@ -1,13 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using maui_car_list.Models;
-using maui_car_list.Views;
 using System.Web;
 
 namespace maui_car_list.ViewModels;
 
 [QueryProperty(nameof(Id), nameof(Id))]
-public partial class CarDetailsViewModel : BaseViewModel, IQueryAttributable
+public partial class CarEditViewModel : BaseViewModel, IQueryAttributable
 {
     [ObservableProperty] Car car;
     [ObservableProperty] int id;
@@ -16,8 +15,8 @@ public partial class CarDetailsViewModel : BaseViewModel, IQueryAttributable
     [ObservableProperty] string make;
     [ObservableProperty] string model;
     [ObservableProperty] string vin;
-    [ObservableProperty] string addEditButtonText;
     [ObservableProperty] int carId;
+
 
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -28,16 +27,37 @@ public partial class CarDetailsViewModel : BaseViewModel, IQueryAttributable
 
 
     [RelayCommand]
-    async Task EditCar(int id)
+    async Task GetCarDetails(int id)
     {
         if (id == 0)
         {
             await Shell.Current.DisplayAlert($"Info", "Not details for this car", "Ok");
             return;
         }
-        // Clear navigation stack to avoid ambiguity and navigate to editPage
-        //await Shell.Current.Navigation.PopToRootAsync();
-        await Shell.Current.GoToAsync($"{nameof(CarEditPage)}?Id={id}", true);
+
+        Car = App.CarService.GetCar(Id);
+    }
+
+
+    [RelayCommand]
+    async Task EditCar(int id)
+    {
+        if (string.IsNullOrEmpty(Make) || string.IsNullOrEmpty(Model) || string.IsNullOrEmpty(Vin))
+        {
+            await Shell.Current.DisplayAlert("Invalid Data", "Please insert valid data to all fields", "Ok");
+            return;
+        }
+
+        var car = App.CarService.GetCar(id);
+        car.Make = Make;
+        car.Model = Model;
+        car.Vin = Vin;
+
+        App.CarService.UpdateCar(car);
+        await Shell.Current.DisplayAlert("Info", App.CarService.StatusMessage, "Ok");
+
+        await ClearForm();
+        Car = App.CarService.GetCar(Id);
     }
 
 
@@ -67,13 +87,19 @@ public partial class CarDetailsViewModel : BaseViewModel, IQueryAttributable
             {
                 await Shell.Current.DisplayAlert("Info", App.CarService.StatusMessage, "Ok");
 
-                // Clear navigation stack to avoid ambiguity and navigate back to MainPage
-                //await Shell.Current.Navigation.PopToRootAsync();
-                //await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
-
-                // above solution throws exception
-                await Shell.Current.GoToAsync("..");
+                // TODO: instead maybe add car to Cars list ....in scope this will trigger refresh also without making new db request
+                Car = App.CarService.GetCar(Id);
+                ;
             }
         }
+    }
+
+
+    [RelayCommand]
+    public Task ClearForm()
+    {
+        CarId = 0;
+        Make = Model = Vin = string.Empty;
+        return Task.CompletedTask;
     }
 }

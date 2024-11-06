@@ -8,78 +8,23 @@
              Title="{Binding Car.FullCarName}">
     
     <StackLayout>
-        <HorizontalStackLayout Padding="20">
-            <Label Text="Make: " FontSize="20"/>
-            <Label Text="{Binding Car.Make}" FontSize="20">
-                <Label.Triggers>
-                    <DataTrigger TargetType="Label" Binding="{Binding IsInEditMode}" Value="true">
-                        <Setter Property="IsVisible" Value="False"/>
-                    </DataTrigger>
-                </Label.Triggers>
-            </Label>
-            <Entry Text="{Binding Make}" FontSize="20">
-                <Entry.Triggers>
-                    <DataTrigger TargetType="Entry" Binding="{Binding IsInEditMode}" Value="false">
-                        <Setter Property="IsVisible" Value="False"/>
-                    </DataTrigger>
-                </Entry.Triggers>
-            </Entry>
+            <HorizontalStackLayout Padding="20">
+            <Label Text="Make:  " FontSize="20"></Label>
+            <Label Text="{Binding Car.Make}" FontSize="20"></Label>
         </HorizontalStackLayout>
         <HorizontalStackLayout Padding="20">
-            <Label Text="Model: " FontSize="20"/>
-            <Label Text="{Binding Car.Model}" FontSize="20">
-                <Label.Triggers>
-                    <DataTrigger TargetType="Label" Binding="{Binding IsInEditMode}" Value="true">
-                        <Setter Property="IsVisible" Value="False"/>
-                    </DataTrigger>
-                </Label.Triggers>
-            </Label>
-            <Entry Text="{Binding Model}" FontSize="20">
-                <Entry.Triggers>
-                    <DataTrigger TargetType="Entry" Binding="{Binding IsInEditMode}" Value="false">
-                        <Setter Property="IsVisible" Value="False"/>
-                    </DataTrigger>
-                </Entry.Triggers>
-            </Entry>
+            <Label Text="Model:  " FontSize="20"></Label>
+            <Label Text="{Binding Car.Model}" FontSize="20"></Label>
         </HorizontalStackLayout>
         <HorizontalStackLayout Padding="20">
-            <Label Text="VIN: " FontSize="20"/>
-            <Label Text="{Binding Car.Vin}" FontSize="20">
-                <Label.Triggers>
-                    <DataTrigger TargetType="Label" Binding="{Binding IsInEditMode}" Value="true">
-                        <Setter Property="IsVisible" Value="False"/>
-                    </DataTrigger>
-                </Label.Triggers>
-            </Label>
-            <Entry Text="{Binding Vin}" FontSize="20">
-                <Entry.Triggers>
-                    <DataTrigger TargetType="Entry" Binding="{Binding IsInEditMode}" Value="false">
-                        <Setter Property="IsVisible" Value="False"/>
-                    </DataTrigger>
-                </Entry.Triggers>
-            </Entry>
+            <Label Text="VIN:  " FontSize="20"></Label>
+            <Label Text="{Binding Car.Vin}" FontSize="20"></Label>
         </HorizontalStackLayout>
         <HorizontalStackLayout Grid.Column="1">
-            <Button Text="{Binding EditButtonText}" Margin="9">
-                <Button.Triggers>
-                    <DataTrigger TargetType="Button" Binding="{Binding IsInEditMode}" Value="true">
-                        <Setter Property="Command" Value="{Binding EditCarCommand}"/>
-                    </DataTrigger>
-                    <DataTrigger TargetType="Button" Binding="{Binding IsInEditMode}" Value="false">
-                        <Setter Property="Command" Value="{Binding ToggleEditModeCommand}"/>
-                    </DataTrigger>
-                </Button.Triggers>
-            </Button>
-            <Button Text="{Binding DeleteButtonText}" Margin="9"/>
-                <Button.Triggers>
-                    <DataTrigger TargetType="Button" Binding="{Binding IsInEditMode}" Value="true">
-                        <Setter Property="Command" Value="{Binding ClearFormCommand}"/>
-                    </DataTrigger>
-                    <DataTrigger TargetType="Button" Binding="{Binding IsInEditMode}" Value="true">
-                        <Setter Property="Command" Value="{Binding DeleteCarCommand}"/>
-                    </DataTrigger>
-            </Button.Triggers>
+            <Button Text="Edit" Command="{Binding EditCarCommand}" CommandParameter="{Binding Car.Id}" Margin="9"/>
+            <Button Text="Delete"   Command="{Binding DeleteCarCommand}" CommandParameter="{Binding Car.Id}" Margin="9"/>
         </HorizontalStackLayout>
     </StackLayout>
+
 
 </ContentPage>

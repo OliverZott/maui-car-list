@@ -11,7 +11,7 @@ public partial class CarListViewModel : BaseViewModel
     private const string editButtonText = "Edit Car";
     private const string addButtontext = "Add Car";
 
-    public ObservableCollection<Car> Cars { get; private set; } = []; // private set because only set here!! Also default initialized (shorthad of new ()
+    public ObservableCollection<Car> Cars { get; private set; } = [];
 
     public CarListViewModel()
     {
@@ -39,7 +39,7 @@ public partial class CarListViewModel : BaseViewModel
 
 
     [RelayCommand]
-    async Task GetCarListAsync()
+    public async Task GetCarListAsync()
     {
         if (IsBusy) return;
 
