@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using maui_car_list.Models;
 using System.Web;
 
@@ -7,11 +8,25 @@ namespace maui_car_list.ViewModels;
 [QueryProperty(nameof(Id), nameof(Id))]
 public partial class CarDetailsViewModel : BaseViewModel, IQueryAttributable
 {
-    [ObservableProperty]
-    Car car;
+    private const string Save = "Save";
+    private const string Edit = "Edit";
+    private const string Delete = "Delete";
+    private const string Cancel = "Cancel";
 
-    [ObservableProperty]
-    int id;
+
+    [ObservableProperty] Car car;
+    [ObservableProperty] int id;
+
+    [ObservableProperty] public bool isRefreshing;
+    [ObservableProperty] string make;
+    [ObservableProperty] string model;
+    [ObservableProperty] string vin;
+    [ObservableProperty] string addEditButtonText;
+    [ObservableProperty] int carId;
+
+    [ObservableProperty] string editButtonText = Edit;
+    [ObservableProperty] string deleteButtonText = Delete;
+    [ObservableProperty] bool isInEditMode = false;
 
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -19,4 +34,94 @@ public partial class CarDetailsViewModel : BaseViewModel, IQueryAttributable
         Id = Convert.ToInt32(HttpUtility.UrlDecode(query["Id"].ToString()));
         Car = App.CarService.GetCar(Id);
     }
+
+
+    [RelayCommand]
+    async Task GetCarDetails(int id)
+    {
+        if (id == 0)
+        {
+            await Shell.Current.DisplayAlert($"Info", "Not details for this car", "Ok");
+            return;
+        }
+
+        Car = App.CarService.GetCar(Id);
+    }
+
+
+    [RelayCommand]
+    async Task EditCar()
+    {
+        if (string.IsNullOrEmpty(Make) || string.IsNullOrEmpty(Model) || string.IsNullOrEmpty(Vin))
+        {
+            await Shell.Current.DisplayAlert("Invalid Data", "Please insert valid data to all fields", "Ok");
+            return;
+        }
+
+        var car = App.CarService.GetCar(id);
+        car.Make = Make;
+        car.Model = Model;
+        car.Vin = Vin;
+
+        App.CarService.UpdateCar(car);
+        await Shell.Current.DisplayAlert("Info", App.CarService.StatusMessage, "Ok");
+
+        await ClearForm();
+        Car = App.CarService.GetCar(Id);
+    }
+
+
+    [RelayCommand]
+    async Task DeleteCar(int id)
+    {
+        if (id == 0)
+        {
+            await Shell.Current.DisplayAlert("Invalid Data", "Id not found", "Ok");
+            return;
+        }
+
+
+        // in DEBUG mode Shell.Current.DisplayAlert at this point crashes the app!??
+        bool confirm = await Shell.Current.DisplayAlert(
+            "Confirm Delete",
+            "Are you sure you want to delete this entry?",
+            "Yes",
+            "No");
+
+        if (confirm)
+        {
+            var result = App.CarService.DeleteCar(id);
+            if (result == 0)
+                await Application.Current.MainPage.DisplayAlert("Error", App.CarService.StatusMessage, "Ok");
+            else
+            {
+                await Shell.Current.DisplayAlert("Info", App.CarService.StatusMessage, "Ok");
+
+                // TODO: instead maybe add car to Cars list ....in scope this will trigger refresh also without making new db request
+                Car = App.CarService.GetCar(Id);
+                ;
+            }
+        }
+    }
+
+
+    [RelayCommand]
+    public Task ClearForm()
+    {
+        CarId = 0;
+        Make = Model = Vin = string.Empty;
+        return Task.CompletedTask;
+    }
+
+    [RelayCommand]
+    private void ToggleEditMode()
+    {
+        IsInEditMode = !IsInEditMode;
+        EditButtonText = IsInEditMode ? Save : Edit;
+        DeleteButtonText = IsInEditMode ? Cancel : Delete;
+    }
+
+
+
+
 }
