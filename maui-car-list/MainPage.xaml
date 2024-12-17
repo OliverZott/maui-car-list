@@ -10,7 +10,7 @@
              Title="{Binding Title}">
 
     <Grid ColumnSpacing="1" RowSpacing="1" Padding="5">
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -28,8 +28,8 @@
             <Entry x:Name="Vin" Placeholder="Enter Vin" Text="{Binding Vin}"/>
         </VerticalStackLayout>
 
-        <Button Text="{Binding AddEditButtonText}" Grid.Row="1" Command="{Binding SaveCarCommand}" IsEnabled="{Binding IsNotBusy}" BackgroundColor="{Binding AddEditButtonColor}" Margin="9" />
-        <Button Text="Clear Form" Grid.Row="2" Command="{Binding ClearFormCommand}" IsEnabled="{Binding IsNotBusy}" Margin="9" />
+        <Button Text="{Binding AddEditButtonText}" Grid.Row="1" Command="{Binding SaveCarCommand}" IsEnabled="{Binding IsNotLoading}" BackgroundColor="{Binding AddEditButtonColor}" Margin="9" />
+        <Button Text="Clear Form" Grid.Row="2" Command="{Binding ClearFormCommand}" IsEnabled="{Binding IsNotLoading}" Margin="9" />
 
         <RefreshView Grid.Row="4"  
                      Command="{Binding GetCarListCommand}" 
@@ -63,41 +63,5 @@
         </RefreshView>
 
     </Grid>
-    
-    <!--<Grid ColumnDefinitions="*,*" ColumnSpacing="5" RowDefinitions="*, Auto">
-        <RefreshView Grid.ColumnSpan="2"
-                     Command="{Binding GetCarListCommand}"
-                     IsRefreshing="{Binding IsRefreshing}">
-            
-            <CollectionView ItemsSource="{Binding Cars}" SelectionMode="None">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="model:Car">
-                        <Grid Padding="10">
-                            <Frame HeightRequest="90">
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:CarListViewModel}}, Path=GetCarDetailsCommand}" 
-                                                          CommandParameter="{Binding .}"/>
-                                </Frame.GestureRecognizers>
-                                <HorizontalStackLayout Padding="10" Spacing="5">
-                                    <Label Text="{Binding Make}"></Label>
-                                    <Label Text="{Binding Model}"></Label>
-                                </HorizontalStackLayout>
-                            </Frame>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
 
-        </RefreshView>
-        
-
-        <Button Text="Fetch Cars" 
-                Command="{Binding GetCarListCommand}" 
-                IsEnabled="{Binding isNotBusy}" 
-                Grid.Row="1" 
-                Grid.Column="0"
-                Margin="9">
-        </Button>
-    </Grid>-->
-             
 </ContentPage>

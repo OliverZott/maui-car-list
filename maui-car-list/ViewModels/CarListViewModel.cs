@@ -41,11 +41,11 @@ public partial class CarListViewModel : BaseViewModel
     [RelayCommand]
     public async Task GetCarListAsync()
     {
-        if (IsBusy) return;
+        if (IsLoading) return;
 
         try
         {
-            IsBusy = true;
+            IsLoading = true;
             if (Cars.Any()) Cars.Clear();
 
             var cars = App.CarService.GetCars();
@@ -62,7 +62,7 @@ public partial class CarListViewModel : BaseViewModel
         }
         finally
         {
-            IsBusy = false;
+            IsLoading = false;
             IsRefreshing = false;
         }
     }

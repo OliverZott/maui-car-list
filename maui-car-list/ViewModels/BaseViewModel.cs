@@ -10,9 +10,9 @@ public partial class BaseViewModel : ObservableObject
     string title;   // title of page we are on
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(IsNotBusy))]
-    bool isBusy;    // is page busy
+    [NotifyPropertyChangedFor(nameof(IsNotLoading))]
+    bool isLoading;    // is page busy
 
-    public bool IsNotBusy => !isBusy;
+    public bool IsNotLoading => !isLoading;
 
 }
