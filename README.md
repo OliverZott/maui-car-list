@@ -1,6 +1,6 @@
 # Readme
 
-Just a little maui testing and learning project :)
+Example project to learn MAUI ([Course](https://www.udemy.com/course/net-maui-mobile-app-development))
 
 AlsoNotifyChanged -> NotifyPropertyChanged
 ICommand -> RelayCommand
@@ -43,3 +43,16 @@ Use .NET Community MVVM Toolkit as Framework for DI, components, UI platform int
 ## ToDo
 
 - Sort by date
+
+
+## API
+
+### Migration / DB update
+
+- `add-migration <commit_message>`
+- `update-database`
+
+If terminal usage (linux/mac):
+- `dotnet tool install --global dotnet-ef`
+- `dotnet ef migration add <commit_message>`
+- `dotnet ef database update`
