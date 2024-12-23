@@ -12,8 +12,9 @@ builder.Services.AddCors(o =>
     o.AddPolicy("AllowAll", a => a.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 });
 
-var dbPath = Path.Join(Directory.GetCurrentDirectory(), "carlist.db");
-var conn = new SqliteConnection($"Data Source={dbPath}");
+//var dbPath = Path.Join(Directory.GetCurrentDirectory(), "carlist.db");
+//var conn = new SqliteConnection($"Data Source={dbPath}");
+var conn = new SqliteConnection($"Data Source=C:\\data\\carlist.db");
 builder.Services.AddDbContext<CarListDbContext>(o =>
     o.UseSqlite(conn));
 
@@ -22,11 +23,13 @@ var app = builder.Build();
 
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
@@ -45,9 +48,9 @@ app.MapPut("/cars/{id}", async (CarListDbContext db, int id, Car car) =>
     if (record == null) Results.NotFound();
 
     // TODO Best practice use DTO
-    car.Make = record.Make;
-    car.Model = record.Model;
-    car.Vin = record.Vin;
+    record!.Make = car.Make;
+    record.Model = car.Model;
+    record.Vin = car.Vin;
 
     await db.SaveChangesAsync();
     return Results.NoContent();

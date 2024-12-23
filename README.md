@@ -56,3 +56,17 @@ If terminal usage (linux/mac):
 - `dotnet tool install --global dotnet-ef`
 - `dotnet ef migration add <commit_message>`
 - `dotnet ef database update`
+
+### Deploy / Publish
+
+- Install `Windows Features` - `Internet Infromation Services`  [screenshot](iis_install.png)
+- Install `.NEt Core Hosting Bundle` [link](https://learn.microsoft.com/en-us/aspnet/core/host-and-deploy/iis/hosting-bundle?view=aspnetcore-9.0#install-the-net-core-hosting-bundle)
+- Right click solution: `Publish`
+- Copy published files e.g.:
+  - from: `C:\repos\maui-car-list\maui-car-list.Api\bin\Release\net8.0\publish`
+  - to: `C:\inetpub\wwwroot\carlist`
+- IIS settings
+  - [iis application pool](iis_applicationpool.png) 
+  - [iis site](iis_site.png) 
+- test e.g.: `http://localhost:8099/swagger` (depending on chosen port)
+- Database (if necessary): `script-migration` or? `update-database` to use database from connection string 
