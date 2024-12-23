@@ -1,3 +1,5 @@
+using Microsoft.Maui.Devices;
+using Microsoft.Maui.ApplicationModel;
 namespace maui_car_list.Views.TestPages;
 
 public partial class LayoutExample : ContentPage
