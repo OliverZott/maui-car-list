@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using maui_car_list.Models;
+using maui_car_list.Services;
 using maui_car_list.Views;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -9,16 +10,18 @@ namespace maui_car_list.ViewModels;
 public partial class CarListViewModel : BaseViewModel
 {
     private const string editButtonText = "Edit Car";
-    private const string addButtontext = "Add Car";
+    private const string addButtonText = "Add Car";
+    private CarApiService carApiService;
 
     public ObservableCollection<Car> Cars { get; private set; } = [];
 
-    public CarListViewModel()
+    public CarListViewModel(CarApiService carApiService)
     {
+        this.carApiService = carApiService;
         Title = "Car List";
-        AddEditButtonText = addButtontext;
+        AddEditButtonText = addButtonText;
         AddEditButtonColor = null;
-        GetCarListAsync().Wait();  // maybe better with OnApperance in ContentnPage MainPage (see training example)
+        //GetCarListAsync().Wait();  // maybe better with OnAppearance in ContentPage MainPage (see training example)
     }
 
 
@@ -48,7 +51,8 @@ public partial class CarListViewModel : BaseViewModel
             IsLoading = true;
             if (Cars.Any()) Cars.Clear();
 
-            var cars = App.CarService.GetCars();
+            //var cars = App.CarService.GetCars();
+            var cars = await carApiService.GetCars();
             // foreach cause no AddRange for observablecollecrion
             foreach (var car in cars)
             {
@@ -161,7 +165,7 @@ public partial class CarListViewModel : BaseViewModel
     [RelayCommand]
     public Task ClearForm()
     {
-        AddEditButtonText = addButtontext;
+        AddEditButtonText = addButtonText;
         AddEditButtonColor = null;
         CarId = 0;
         Make = Model = Vin = string.Empty;

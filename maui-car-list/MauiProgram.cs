@@ -2,7 +2,6 @@
 using maui_car_list.ViewModels;
 using maui_car_list.Views;
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Storage;
 
 namespace maui_car_list;
 
@@ -20,9 +19,12 @@ public static class MauiProgram
             });
 
 
+
         // db setup ensures that CarService is created with dbPath and is available for DI throughout MAUI app
         string dbPath = Path.Combine(FileSystem.AppDataDirectory, "cars.db3");
         builder.Services.AddSingleton(s => ActivatorUtilities.CreateInstance<CarService>(s, dbPath));
+
+        builder.Services.AddTransient<CarApiService>();
 
         builder.Services.AddSingleton<CarListViewModel>();
         builder.Services.AddTransient<CarDetailsViewModel>();  // transient because we want new instance of page every time!

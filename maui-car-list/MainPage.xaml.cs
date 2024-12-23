@@ -17,7 +17,7 @@ public partial class MainPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        App.CarService.GetCars();
-        _carListViewModel.GetCarListAsync().Wait();
+        //App.CarService.GetCars();
+        //_carListViewModel.GetCarListAsync().Wait();
     }
 }
