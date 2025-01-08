@@ -22,9 +22,11 @@ public class CarApiService
         try
         {
             var response = await httpClient.GetStringAsync("/cars");
-            var response2 = await httpClient.GetAsync("/cars");
-            response2.EnsureSuccessStatusCode();
-            var cars = JsonSerializer.Deserialize<List<Car>>(response);
+            //var response2 = await httpClient.GetAsync("/cars");
+            //response2.EnsureSuccessStatusCode();
+            //var cars = JsonSerializer.Deserialize<List<Car>>(response);
+            var cars = JsonSerializer.Deserialize<List<Car>>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
             return cars;
         }
         catch (Exception)
@@ -40,8 +42,6 @@ public class CarApiService
         try
         {
             var response = await httpClient.GetStringAsync($"/cars/{id}");
-            var response2 = await httpClient.GetAsync("/cars");
-            response2.EnsureSuccessStatusCode();
             var car = JsonSerializer.Deserialize<Car>(response);
             return car;
         }
