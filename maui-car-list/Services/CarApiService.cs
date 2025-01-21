@@ -42,7 +42,7 @@ public class CarApiService
         try
         {
             var response = await httpClient.GetStringAsync($"/cars/{id}");
-            var car = JsonSerializer.Deserialize<Car>(response);
+            var car = JsonSerializer.Deserialize<Car>(response, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             return car;
         }
         catch (Exception)

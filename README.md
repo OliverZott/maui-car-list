@@ -1,4 +1,4 @@
-# Readme
+﻿# Readme
 
 Example project to learn MAUI ([Course](https://www.udemy.com/course/net-maui-mobile-app-development))
 
@@ -17,22 +17,36 @@ ICommand -> RelayCommand
 1. clean sln / remove obj/bin folder / build solution
 1. DO ALL of the above
 
-## MVVM
+### MVVM
 
-### View Model
+#### View Model
 
 - Implements **properties** and **commands**, the view can **bind** to
 - **Notifies** the view of state changes through **change notification events**
 - Properties and commands in viewmodel define fucntionality offered by UI
 - **Asynchronous** methods for I/O operations to ensure UI is **unblocked** 
 
-### Implementation
+#### Implementation
 - Class implementing **INotifyPropertyChanged**
 - Raise **PropertyChanged** event each time a bound property changes
 - Set ViewModel as **BindingContext** in the construcore
 - **Bind** UI Elements to properties and commands
 
 Use .NET Community MVVM Toolkit as Framework for DI, components, UI platform integration (others: ReactiveUI, PrismLibrary)
+
+### Ancestor data binding
+
+RelativeSource and AncestorType  is necessary because the DataTemplate creates a new context for each item (e.g. Car in CarListViewModel), 
+which is the data object. The BindingContext within a DataTemplate is set to the individual item (Car), not to the CarListViewModel. 
+To bind commands that are defined in the CarListViewModel,we need to specify the source of the binding context explicitly.
+
+```txt
+MainPage (BindingContext = CarListViewModel)
+  ├── CollectionView
+       └── DataTemplate (BindingContext = Car)
+             ├── Labels (Bindings to Car properties)
+             └── Buttons (Bindings to CarListViewModel commands via RelativeSource)
+```
 
 ## ToDo
 

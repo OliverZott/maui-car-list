@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using maui_car_list.Models;
+using maui_car_list.Services;
 using maui_car_list.Views;
 using System.Web;
 
@@ -9,23 +10,40 @@ namespace maui_car_list.ViewModels;
 [QueryProperty(nameof(Id), nameof(Id))]
 public partial class CarDetailsViewModel : BaseViewModel, IQueryAttributable
 {
-    [ObservableProperty] Car car;
+    private readonly CarApiService apiService;
+    NetworkAccess accessType = Connectivity.Current.NetworkAccess;
+
+    public CarDetailsViewModel(CarApiService apiService)
+    {
+        this.apiService = apiService;
+    }
+
+    [ObservableProperty] Car? car;
     [ObservableProperty] int id;
-
-    [ObservableProperty] public bool isRefreshing;
-    [ObservableProperty] string make;
-    [ObservableProperty] string model;
-    [ObservableProperty] string vin;
-    [ObservableProperty] string addEditButtonText;
-    [ObservableProperty] int carId;
-
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         Id = Convert.ToInt32(HttpUtility.UrlDecode(query["Id"].ToString()));
-        Car = App.CarService.GetCar(Id);
     }
 
+    public async Task GetCarData()
+    {
+        if (accessType == NetworkAccess.Internet)
+        {
+            Car = await apiService.GetCar(Id);
+        }
+        else
+        {
+            Car = App.CarService.GetCar(Id);
+        }
+    }
+
+    [ObservableProperty] public bool isRefreshing;
+    [ObservableProperty] string? make;
+    [ObservableProperty] string? model;
+    [ObservableProperty] string? vin;
+    [ObservableProperty] string? addEditButtonText;
+    [ObservableProperty] int carId;
 
     [RelayCommand]
     async Task EditCar(int id)

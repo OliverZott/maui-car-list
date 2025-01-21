@@ -13,6 +13,11 @@ public partial class CarListViewModel : BaseViewModel
     private const string addButtonText = "Add Car";
     private readonly CarApiService carApiService;
 
+    // use remote db if in internet, else use local db
+    NetworkAccess accessType = Connectivity.Current.NetworkAccess;
+
+    string message = string.Empty;
+
     public ObservableCollection<Car> Cars { get; private set; } = [];
 
     public CarListViewModel(CarApiService carApiService)
@@ -49,19 +54,25 @@ public partial class CarListViewModel : BaseViewModel
         {
             IsLoading = true;
             if (Cars.Any()) Cars.Clear();
+            var cars = new List<Car>();
 
-            //var cars = App.CarService.GetCars();
-            var cars = await carApiService.GetCars();
-            // foreach cause no AddRange for observablecollecrion
-            foreach (var car in cars)
+            if (accessType == NetworkAccess.Internet)
             {
-                Cars.Add(car);
+                cars = await carApiService.GetCars();
             }
+            else
+            {
+                cars = App.CarService.GetCars();
+            }
+
+            // foreach cause no AddRange for observable collection
+            foreach (var car in cars) Cars.Add(car);
+
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"Unable to get cars: {ex.Message}");  // sink is Output Window, when in Debug Mode
-            await Shell.Current.DisplayAlert($"Error", "Failed to retrieve list of cars", "Ok");  // could abstract that away and user via DI
+            await ShowAlert("Failed to retrieve list of cars");  // could abstract that away and user via DI
         }
         finally
         {
@@ -76,7 +87,7 @@ public partial class CarListViewModel : BaseViewModel
     {
         if (id == 0)
         {
-            await Shell.Current.DisplayAlert($"Info", "Not details for this car", "Ok");
+            await ShowAlert("Not details for this car");
             return;
         }
 
@@ -89,28 +100,45 @@ public partial class CarListViewModel : BaseViewModel
     {
         if (string.IsNullOrEmpty(Make) || string.IsNullOrEmpty(Model) || string.IsNullOrEmpty(Vin))
         {
-            await Shell.Current.DisplayAlert("Invalid Data", "Please insert valid data to all fields", "Ok");
+            await ShowAlert("Please insert valid data to all fields");
             return;
         }
 
         var car = new Car
         {
+            Id = CarId,
             Make = Make,
             Model = Model,
             Vin = Vin
         };
         if (CarId != 0)
         {
-            car.Id = CarId;
-            await carApiService.UpdateCar(CarId, car);
-            await Shell.Current.DisplayAlert("Info", carApiService.StatusMessage, "Ok");
+            if (accessType == NetworkAccess.Internet)
+            {
+                await carApiService.UpdateCar(CarId, car);
+                message = carApiService.StatusMessage;
+            }
+            else
+            {
+                App.CarService.UpdateCar(car);
+                message = carApiService.StatusMessage;
+            }
         }
         else
         {
-            await carApiService.AddCar(car);
-            await Shell.Current.DisplayAlert("Info", carApiService.StatusMessage, "Ok");
+            if (accessType == NetworkAccess.Internet)
+            {
+                await carApiService.AddCar(car);
+                message = carApiService.StatusMessage;
+            }
+            else
+            {
+                App.CarService.AddCar(car);
+                message = carApiService.StatusMessage;
+            }
         }
 
+        await ShowAlert(message);
         await GetCarListAsync();
         await ClearForm();
     }
@@ -125,7 +153,6 @@ public partial class CarListViewModel : BaseViewModel
             return;
         }
 
-
         // in DEBUG mode Shell.Current.DisplayAlert at this point crashes the app!??
         bool confirm = await Shell.Current.DisplayAlert(
             "Confirm Delete",
@@ -135,21 +162,21 @@ public partial class CarListViewModel : BaseViewModel
 
         if (confirm)
         {
-            var result = carApiService.DeleteCar(id);
-            await Shell.Current.DisplayAlert("Info", carApiService.StatusMessage, "Ok");
+            if (accessType == NetworkAccess.Internet)
+            {
+                await carApiService.DeleteCar(id);
+                message = carApiService.StatusMessage;
+            }
+            else
+            {
+                App.CarService.DeleteCar(id);
+                message = carApiService.StatusMessage;
+            }
+
+            await ShowAlert(message);
             await GetCarListAsync();
-
-            //if (result == 0) await Application.Current.MainPage.DisplayAlert("Error", carApiService.StatusMessage, "Ok");
-            //else
-            //{
-            //    await Shell.Current.DisplayAlert("Info", carApiService.StatusMessage, "Ok");
-
-            //    // TODO: instead maybe add car to Cars list ....in scope this will trigger refresh also without making new db request
-            //    await GetCarListAsync();
-            //}
         }
     }
-
 
     [RelayCommand]
     async Task SetEditMode(int id)
@@ -163,7 +190,6 @@ public partial class CarListViewModel : BaseViewModel
         Vin = car.Vin;
     }
 
-
     [RelayCommand]
     public Task ClearForm()
     {
@@ -172,5 +198,10 @@ public partial class CarListViewModel : BaseViewModel
         CarId = 0;
         Make = Model = Vin = string.Empty;
         return Task.CompletedTask;
+    }
+
+    public async Task ShowAlert(string message)
+    {
+        await Shell.Current.DisplayAlert("Info", message, "Ok");
     }
 }

@@ -67,7 +67,6 @@ app.MapDelete("/cars/{id}", async (int id, CarListDbContext db) =>
     return Results.NoContent();
 });
 
-// TODO: remove ID?!
 app.MapPost("/cars", async (CarListDbContext db, Car car) =>
  {
      await db.AddAsync(car);
