@@ -7,7 +7,7 @@ namespace maui_car_list.Services;
 public class CarApiService
 {
     HttpClient httpClient;
-    public static readonly string baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://172.25.176.1:8099" : "http://localhost:8099";
+    public static readonly string baseAddress = DeviceInfo.Platform == DevicePlatform.Android ? "http://192.168.100.146:8099" : "http://localhost:8099";
     public string StatusMessage = "";
 
 

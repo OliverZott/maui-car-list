@@ -62,5 +62,7 @@ If terminal usage (linux/mac):
 - IIS settings
   - [iis application pool](iis_applicationpool.png) 
   - [iis site](iis_site.png) 
-- test e.g.: `http://localhost:8099/swagger` (depending on chosen port)
+- test e.g.: 
+  - `http://localhost:8099/swagger` (depending on chosen port)
+  - `http://localhost:8099/cars`
 - Database (if necessary): `script-migration` or? `update-database` to use database from connection string 

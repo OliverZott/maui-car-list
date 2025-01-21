@@ -24,7 +24,7 @@ public static class MauiProgram
         string dbPath = Path.Combine(FileSystem.AppDataDirectory, "cars.db3");
         builder.Services.AddSingleton(s => ActivatorUtilities.CreateInstance<CarService>(s, dbPath));
 
-        builder.Services.AddTransient<CarApiService>();
+        builder.Services.AddTransient<CarApiService>();  // because each time we open connection, we want new object
 
         builder.Services.AddSingleton<CarListViewModel>();
         builder.Services.AddTransient<CarDetailsViewModel>();  // transient because we want new instance of page every time!

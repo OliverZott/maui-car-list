@@ -11,7 +11,7 @@ public partial class CarListViewModel : BaseViewModel
 {
     private const string editButtonText = "Edit Car";
     private const string addButtonText = "Add Car";
-    private CarApiService carApiService;
+    private readonly CarApiService carApiService;
 
     public ObservableCollection<Car> Cars { get; private set; } = [];
 
@@ -21,18 +21,17 @@ public partial class CarListViewModel : BaseViewModel
         Title = "Car List";
         AddEditButtonText = addButtonText;
         AddEditButtonColor = null;
-        //GetCarListAsync().Wait();  // maybe better with OnAppearance in ContentPage MainPage (see training example)
     }
 
 
     [ObservableProperty]
     public bool isRefreshing;
     [ObservableProperty]
-    string make;
+    string? make;
     [ObservableProperty]
-    string model;
+    string? model;
     [ObservableProperty]
-    string vin;
+    string? vin;
     [ObservableProperty]
     string addEditButtonText;
     [ObservableProperty]
@@ -103,13 +102,13 @@ public partial class CarListViewModel : BaseViewModel
         if (CarId != 0)
         {
             car.Id = CarId;
-            App.CarService.UpdateCar(car);
-            await Shell.Current.DisplayAlert("Info", App.CarService.StatusMessage, "Ok");
+            await carApiService.UpdateCar(CarId, car);
+            await Shell.Current.DisplayAlert("Info", carApiService.StatusMessage, "Ok");
         }
         else
         {
-            App.CarService.AddCar(car);
-            await Shell.Current.DisplayAlert("Info", App.CarService.StatusMessage, "Ok");
+            await carApiService.AddCar(car);
+            await Shell.Current.DisplayAlert("Info", carApiService.StatusMessage, "Ok");
         }
 
         await GetCarListAsync();
@@ -136,15 +135,18 @@ public partial class CarListViewModel : BaseViewModel
 
         if (confirm)
         {
-            var result = App.CarService.DeleteCar(id);
-            if (result == 0) await Application.Current.MainPage.DisplayAlert("Error", App.CarService.StatusMessage, "Ok");
-            else
-            {
-                await Shell.Current.DisplayAlert("Info", App.CarService.StatusMessage, "Ok");
+            var result = carApiService.DeleteCar(id);
+            await Shell.Current.DisplayAlert("Info", carApiService.StatusMessage, "Ok");
+            await GetCarListAsync();
 
-                // TODO: instead maybe add car to Cars list ....in scope this will trigger refresh also without making new db request
-                await GetCarListAsync();
-            }
+            //if (result == 0) await Application.Current.MainPage.DisplayAlert("Error", carApiService.StatusMessage, "Ok");
+            //else
+            //{
+            //    await Shell.Current.DisplayAlert("Info", carApiService.StatusMessage, "Ok");
+
+            //    // TODO: instead maybe add car to Cars list ....in scope this will trigger refresh also without making new db request
+            //    await GetCarListAsync();
+            //}
         }
     }
 
@@ -155,7 +157,7 @@ public partial class CarListViewModel : BaseViewModel
         AddEditButtonText = editButtonText;
         AddEditButtonColor = Color.FromArgb("#ffcc66");
         CarId = id;  // set input id to binding context of the form
-        var car = App.CarService.GetCar(id);
+        var car = await carApiService.GetCar(id);
         Make = car.Make;
         Model = car.Model;
         Vin = car.Vin;
