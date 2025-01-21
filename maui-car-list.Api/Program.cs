@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,8 +16,11 @@ builder.Services.AddCors(o =>
 //var dbPath = Path.Join(Directory.GetCurrentDirectory(), "carlist.db");
 //var conn = new SqliteConnection($"Data Source={dbPath}");
 var conn = new SqliteConnection($"Data Source=C:\\data\\carlist.db");
-builder.Services.AddDbContext<CarListDbContext>(o =>
-    o.UseSqlite(conn));
+builder.Services.AddDbContext<CarListDbContext>(o => o.UseSqlite(conn));
+
+builder.Services.AddIdentityCore<IdentityUser>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<CarListDbContext>();
 
 var app = builder.Build();
 

@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
-internal class CarListDbContext : DbContext
+internal class CarListDbContext : IdentityDbContext
 {
     public CarListDbContext(DbContextOptions<CarListDbContext> options) : base(options)
     {

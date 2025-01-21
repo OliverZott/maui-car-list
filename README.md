@@ -47,10 +47,19 @@ MainPage (BindingContext = CarListViewModel)
              ├── Labels (Bindings to Car properties)
              └── Buttons (Bindings to CarListViewModel commands via RelativeSource)
 ```
+## Authentication and Authorization
 
-## ToDo
+- **Authentication** ...user identity
+- **Authorization** ...what can user do
+- **RBAC** ...role based access control
 
-- Sort by date
+###
+Implementation
+Implement using **Microsoft.AspNetCore.Identity.EntityFrameworkCore** which can use custom IdentityUsers or the default IdentityUser and default roles (`IdentityDbContext<CustomIdentityUser>`).
+
+After editing Program.cs and DbContext, make migration and db update:
+- `add-migration AddedIdentityTables`
+- `update-database`
 
 
 ## API
