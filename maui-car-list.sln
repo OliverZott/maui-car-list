@@ -7,6 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "maui-car-list", "maui-car-l
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F2C08EA9-9574-42B2-AE77-BAD2A265B2AB}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		iis_applicationpool.png = iis_applicationpool.png
 		iis_install.png = iis_install.png
 		iis_install_fix.png = iis_install_fix.png

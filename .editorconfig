@@ -1,0 +1,8 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+root = true
+
+# C# files
+[*.cs]
+# Suppress MVVMTK0045 warning globally
+dotnet_diagnostic.MVVMTK0045.severity = none
